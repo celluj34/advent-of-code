@@ -4,7 +4,8 @@
   "license": "ISC",
   "type": "module",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc --build",
+    "start": "tsc --build && node --es-module-specifier-resolution=node"
   },
   "devDependencies": {
     "@types/node": "16.11.11",

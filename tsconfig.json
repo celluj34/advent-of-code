@@ -7,9 +7,9 @@
     "moduleResolution": "Node",
     "noEmitOnError": true,
     "sourceMap": true,
-    "module": "CommonJS",
-    "target": "ES2020",
-    "lib": ["ES2020"],
+    "module": "ESNext",
+    "target": "ES2021",
+    "lib": ["ES2021"],
     "esModuleInterop": true,
     "skipLibCheck": true
   },
