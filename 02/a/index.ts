@@ -9,7 +9,6 @@ const start = async () => {
   for (const value of lines) {
     const [command, magnitude] = value.split(" ");
 
-
     switch (command) {
       case "forward":
         length += parseInt(magnitude);
