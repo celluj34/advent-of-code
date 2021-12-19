@@ -1,4 +1,4 @@
-import input from "./input";
+import input from "../input";
 
 const start = async () => {
   const result = input
