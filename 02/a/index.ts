@@ -1,6 +1,6 @@
 import input from "../input";
 
-const start = async () => {
+const start = () => {
   const lines = input.split("\n");
 
   let depth = 0;
@@ -27,6 +27,4 @@ const start = async () => {
   console.log(`The final result is ${depth * length}`);
 };
 
-(async () => {
-  await start();
-})();
+start();

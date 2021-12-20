@@ -1,6 +1,6 @@
 import input from "../input";
 
-const start = async () => {
+const start = () => {
   const lines = input.split("\n").map((x) => parseInt(x));
 
   let values: Array<number> = [];
@@ -37,6 +37,4 @@ const start = async () => {
   console.log(`number of increases: ${count}`);
 };
 
-(async () => {
-  await start();
-})();
+start();

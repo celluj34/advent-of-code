@@ -22,7 +22,7 @@ const getMostCommonDigits = (input: Array<Array<string>>) => {
     .map((x) => (x.zeroes > x.ones ? "0" : "1"));
 };
 
-const start = async () => {
+const start = () => {
   const lines = input.split("\n").map((x) => x.split(""));
 
   const result = lines.reduce((totals, bits) => {
@@ -80,6 +80,4 @@ const start = async () => {
   console.log(`The final result is ${oxygenRating * carbonDioxideRating}`);
 };
 
-(async () => {
-  await start();
-})();
+start();

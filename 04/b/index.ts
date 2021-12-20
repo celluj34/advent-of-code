@@ -1,6 +1,6 @@
 import input from "../input";
 
-const start = async () => {
+const start = () => {
   const lines = input.split("\n");
 
   const calledNumbers = lines[0].split(",").map((x) => parseInt(x));
@@ -108,6 +108,4 @@ const getWinningNumbers = (
   return null;
 };
 
-(async () => {
-  await start();
-})();
+start();

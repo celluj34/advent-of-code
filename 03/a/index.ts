@@ -1,6 +1,6 @@
 import input from "../input";
 
-const start = async () => {
+const start = () => {
   const result = input
     .split("\n")
     .map((x) => x.split(""))
@@ -42,6 +42,4 @@ const start = async () => {
   console.log(`The final result is ${gamma * epsilon}`);
 };
 
-(async () => {
-  await start();
-})();
+start();
