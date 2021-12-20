@@ -58,8 +58,7 @@ const generateEmptyGrid = (
   const grid = new Array<Array<number>>();
 
   for (let index = 0; index < maxY; ++index) {
-    const arr = new Array<number>();
-    arr.length = maxX;
+    const arr = new Array<number>(maxX);
     arr.fill(0);
     grid.push(arr);
   }
