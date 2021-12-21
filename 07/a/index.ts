@@ -6,8 +6,6 @@ const start = () => {
     .map((x) => parseInt(x))
     .sort((a, b) => a - b);
 
-  console.log(inputs);
-
   const median = getMedian(inputs);
 
   const fuel = inputs.reduce(

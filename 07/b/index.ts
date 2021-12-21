@@ -28,7 +28,6 @@ const start = () => {
         position: position,
         fuel: fuel,
       };
-      console.log(fuel);
     }
   }
 

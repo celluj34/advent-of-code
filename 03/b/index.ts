@@ -75,8 +75,6 @@ const start = () => {
     ++i;
   }
 
-  console.log(`The final oxygenRating is ${oxygenRating}`);
-  console.log(`The final carbonDioxideRating is ${carbonDioxideRating}`);
   console.log(`The final result is ${oxygenRating * carbonDioxideRating}`);
 };
 

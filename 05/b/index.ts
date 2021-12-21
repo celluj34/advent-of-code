@@ -15,7 +15,7 @@ const generatePlotPoints = (): Array<{
   y1: number;
   x2: number;
   y2: number;
-  type: "horiztonal" | "vertical" | "diagonal";
+  type: "horizontal" | "vertical" | "diagonal";
 }> => {
   return input.split("\n").map((x) => {
     const coordPairs = x.split(" -> ").map((y) => {
@@ -34,7 +34,7 @@ const generatePlotPoints = (): Array<{
       y1: y1,
       x2: x2,
       y2: y2,
-      type: x1 === x2 ? "vertical" : y1 === y2 ? "horiztonal" : "diagonal",
+      type: x1 === x2 ? "vertical" : y1 === y2 ? "horizontal" : "diagonal",
     };
   });
 };
@@ -72,7 +72,7 @@ const plotVectors = (
     y1: number;
     x2: number;
     y2: number;
-    type: "horiztonal" | "vertical" | "diagonal";
+    type: "horizontal" | "vertical" | "diagonal";
   }>
 ) => {
   for (const vector of vectors) {
@@ -106,7 +106,7 @@ const plotVectors = (
       for (let index = minY; index <= mayY; ++index) {
         ++grid[index][vector.x1];
       }
-    } else if (vector.type === "horiztonal") {
+    } else if (vector.type === "horizontal") {
       const minX = Math.min(vector.x1, vector.x2);
       const maxX = Math.max(vector.x1, vector.x2);
       for (let index = minX; index <= maxX; ++index) {

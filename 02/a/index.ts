@@ -22,8 +22,6 @@ const start = () => {
     }
   }
 
-  console.log(`The final depth is ${depth}`);
-  console.log(`The final length is ${length}`);
   console.log(`The final result is ${depth * length}`);
 };
 

@@ -26,9 +26,6 @@ const start = () => {
       0
     );
 
-    console.log(currentValue);
-    console.log(newValue);
-
     if (newValue > currentValue) {
       ++count;
     }

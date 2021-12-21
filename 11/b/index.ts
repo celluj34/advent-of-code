@@ -9,7 +9,6 @@ const start = () => {
     incrementEntireGrid(grid);
     propagateEnergy(grid);
     const allFlashed = flashLights(grid);
-    console.log({ step, allFlashed });
     if (allFlashed) {
       console.log(`The final result is ${step + 1}`);
       break;
