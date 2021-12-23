@@ -1,17 +1,15 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
+    "rootDir": "./",
     "outDir": "./dist",
-    "forceConsistentCasingInFileNames": true,
     "strict": true,
     "moduleResolution": "Node",
     "noEmitOnError": true,
     "sourceMap": true,
     "module": "ESNext",
     "target": "ES2021",
-    "lib": ["ES2021"],
-    "esModuleInterop": true,
-    "skipLibCheck": true
+    "lib": ["ES2021"]
   },
-  "exclude": ["node_modules", "dist", "lib", "lib-amd"]
+  "exclude": ["node_modules"]
 }

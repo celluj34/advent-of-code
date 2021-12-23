@@ -1,4 +1,4 @@
-import input from "../input-sample";
+import input from "../input-sample.js";
 
 const maxSteps = Number.MAX_SAFE_INTEGER;
 

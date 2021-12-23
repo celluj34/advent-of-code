@@ -1,4 +1,4 @@
-import input from "../input";
+import input from "../input.js";
 
 const getMostCommonDigits = (input: Array<Array<string>>) => {
   return input

@@ -1,4 +1,4 @@
-import input from "../input-sample";
+import input from "../input-sample.js";
 
 const start = () => {
   const inputs = input.split("\n");

@@ -1,4 +1,4 @@
-import input from "../input-sample";
+import input from "../input-sample.js";
 
 const juvenileSpawnTimer = 8;
 const adultSpawnTimer = 6;
