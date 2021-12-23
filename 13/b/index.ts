@@ -1,120 +1,110 @@
 import input from "../input";
 
 const start = () => {
-  const inputs = input
-    .split("\n")
-    .map((x) => {
-      const [start, end] = x.split("-");
-      return [
-        { start, end },
-        { start: end, end: start },
-      ];
-    })
-    .flat()
-    .sort((a, b) => {
-      const startResult = a.start.localeCompare(b.start);
-      return startResult === 0 ? a.end.localeCompare(b.end) : startResult;
-    });
+  const grid = generateGrid();
+  const instructions = generateFoldInstructions();
 
-  const nodes: Array<{ name: string; type: "small" | "big" }> = [
-    ...new Set(inputs.map((x) => [x.start, x.end]).flat()),
-  ].map((x) => {
-    const char = x[0];
+  const foldedGrid = foldGrid(grid, instructions);
 
-    return {
-      name: x,
-      type:
-        char == x[0].toLowerCase() && x[0] != x[0].toUpperCase()
-          ? "small"
-          : "big",
-    };
-  });
-
-  const allPaths = getAllPaths(["start"], inputs, nodes);
-  console.log(`The final result is ${allPaths.length}`);
+  console.log(foldedGrid.map((x) => x.join("")).join("\r\n"));
 };
 
-const getAllPaths = (
-  currentPath: Array<string>,
-  allEdges: Array<{ start: string; end: string }>,
-  nodes: Array<{ name: string; type: "small" | "big" }>
-) => {
-  const availableEdges = getAvailableEdges(currentPath, allEdges, nodes);
-  if (availableEdges.length === 0) {
-    if (currentPath[currentPath.length - 1] === "end") {
-      return [currentPath];
+const generateGrid = (): Array<Array<string>> => {
+  const gridInputs = new Array<Array<number>>();
+  const inputs = input.split("\n");
+
+  for (const row of inputs) {
+    if (row === "") {
+      break;
     }
-    return [];
+
+    gridInputs.push(row.split(",").map((x) => parseInt(x)));
   }
 
-  const allPaths = new Array<Array<string>>();
-  for (const availableEdge of availableEdges) {
-    const childNodes = getAllPaths(
-      [...currentPath, availableEdge],
-      allEdges,
-      nodes
-    );
+  const maxX = Math.max(...gridInputs.map((x) => x[0]));
+  const maxY = Math.max(...gridInputs.map((x) => x[1]));
 
-    allPaths.push(...childNodes);
+  let grid = new Array<Array<string>>(maxY + 1);
+
+  const emptyRow = new Array<string>(maxX + 1);
+  emptyRow.fill(" ");
+
+  grid.fill(emptyRow);
+
+  grid = JSON.parse(JSON.stringify(grid));
+
+  for (const gridInput of gridInputs) {
+    grid[gridInput[1]][gridInput[0]] = "#";
   }
 
-  return allPaths;
+  return grid;
 };
 
-const getAvailableEdges = (
-  path: Array<string>,
-  allEdges: Array<{ start: string; end: string }>,
-  nodes: Array<{ name: string; type: "small" | "big" }>
-) => {
-  const currentNode = path[path.length - 1];
+const generateFoldInstructions = (): Array<{
+  type: "x" | "y";
+  index: number;
+}> => {
+  return input
+    .split("\n")
+    .filter((x) => x.startsWith("fold along"))
+    .map((x) => {
+      const pairs = x.split("fold along ")[1].split("=");
 
-  if (currentNode === "end") {
-    return [];
+      return {
+        type: pairs[0] as any,
+        index: parseInt(pairs[1]),
+      };
+    });
+};
+
+const foldGrid = (
+  grid: Array<Array<string>>,
+  instructions: Array<{ type: "x" | "y"; index: number }>
+): Array<Array<string>> => {
+  for (const instruction of instructions) {
+    if (instruction.type === "y") {
+      const topHalf = grid.slice(0, instruction.index);
+      const bottomHalf = grid.slice(instruction.index + 1).reverse();
+
+      for (let rowIndex = 0; rowIndex < topHalf.length; ++rowIndex) {
+        const topRow = topHalf[rowIndex];
+        const bottomRow = bottomHalf[rowIndex];
+
+        for (let columnIndex = 0; columnIndex < topRow.length; ++columnIndex) {
+          topRow[columnIndex] = [
+            topRow[columnIndex],
+            bottomRow[columnIndex],
+          ].includes("#")
+            ? "#"
+            : " ";
+        }
+      }
+
+      grid.length = instruction.index;
+    } else if (instruction.type === "x") {
+      for (const row of grid) {
+        const leftHalf = row.slice(0, instruction.index);
+        const rightHalf = row.slice(instruction.index + 1).reverse();
+
+        for (
+          let columnIndex = 0;
+          columnIndex < leftHalf.length;
+          ++columnIndex
+        ) {
+          row[columnIndex] = [
+            leftHalf[columnIndex],
+            rightHalf[columnIndex],
+          ].includes("#")
+            ? "#"
+            : " ";
+        }
+
+        row.length = instruction.index;
+      }
+    }
   }
 
-  return allEdges
-    .filter((x) => {
-      if (x.start !== currentNode) {
-        return false;
-      }
-
-      if (x.end === "start" || x.start === "end") {
-        return false;
-      }
-
-      if (!path.includes(x.end)) {
-        return true;
-      }
-
-      const childNode = nodes.find((y) => y.name === x.end);
-      if (childNode!.type === "big") {
-        return true;
-      }
-
-      let counts = path
-        .filter(
-          (y) =>
-            y !== "start" &&
-            y !== "end" &&
-            nodes.find((z) => z.name === y)!.type === "small"
-        )
-        .reduce((p, c) => {
-          var name = c;
-          if (!p.hasOwnProperty(name)) {
-            p[c] = 0;
-          }
-          p[c]++;
-          return p;
-        }, {} as any);
-
-      return Object.keys(counts)
-        .map((k) => ({
-          name: k,
-          count: counts[k],
-        }))
-        .every((y) => y.count === 1);
-    })
-    .map((x) => x.end);
+  return grid;
 };
 
 start();

@@ -1,12 +1,14 @@
-import input from "../input-sample";
+import input from "../input";
 
 const start = () => {
   const grid = generateGrid();
   const instructions = generateFoldInstructions();
 
-  // console.log(`The final result is ${grid}`);
-  console.log(instructions);
-  console.log(grid.map((x) => x.join("")).join("\r\n"));
+  const foldedGrid = foldGrid(grid, instructions);
+
+  console.log(
+    `The final result is ${foldedGrid.flat().filter((x) => x === "#").length}`
+  );
 };
 
 const generateGrid = (): Array<Array<string>> => {
@@ -27,7 +29,7 @@ const generateGrid = (): Array<Array<string>> => {
   let grid = new Array<Array<string>>(maxY + 1);
 
   const emptyRow = new Array<string>(maxX + 1);
-  emptyRow.fill(".");
+  emptyRow.fill(" ");
 
   grid.fill(emptyRow);
 
@@ -40,7 +42,10 @@ const generateGrid = (): Array<Array<string>> => {
   return grid;
 };
 
-const generateFoldInstructions = (): Array<{ type: string; index: number }> => {
+const generateFoldInstructions = (): Array<{
+  type: "x" | "y";
+  index: number;
+}> => {
   return input
     .split("\n")
     .filter((x) => x.startsWith("fold along"))
@@ -48,10 +53,60 @@ const generateFoldInstructions = (): Array<{ type: string; index: number }> => {
       const pairs = x.split("fold along ")[1].split("=");
 
       return {
-        type: pairs[0],
+        type: pairs[0] as any,
         index: parseInt(pairs[1]),
       };
     });
+};
+
+const foldGrid = (
+  grid: Array<Array<string>>,
+  instructions: Array<{ type: "x" | "y"; index: number }>
+): Array<Array<string>> => {
+  for (const instruction of instructions) {
+    if (instruction.type === "y") {
+      const topHalf = grid.slice(0, instruction.index);
+      const bottomHalf = grid.slice(instruction.index + 1).reverse();
+
+      for (let rowIndex = 0; rowIndex < topHalf.length; ++rowIndex) {
+        const topRow = topHalf[rowIndex];
+        const bottomRow = bottomHalf[rowIndex];
+
+        for (let columnIndex = 0; columnIndex < topRow.length; ++columnIndex) {
+          topRow[columnIndex] = [
+            topRow[columnIndex],
+            bottomRow[columnIndex],
+          ].includes("#")
+            ? "#"
+            : " ";
+        }
+      }
+
+      grid.length = instruction.index;
+    } else if (instruction.type === "x") {
+      for (const row of grid) {
+        const leftHalf = row.slice(0, instruction.index);
+        const rightHalf = row.slice(instruction.index + 1).reverse();
+
+        for (
+          let columnIndex = 0;
+          columnIndex < leftHalf.length;
+          ++columnIndex
+        ) {
+          row[columnIndex] = [
+            leftHalf[columnIndex],
+            rightHalf[columnIndex],
+          ].includes("#")
+            ? "#"
+            : " ";
+        }
+
+        row.length = instruction.index;
+      }
+    }
+  }
+
+  return grid;
 };
 
 start();
