@@ -7,8 +7,6 @@ const start = () => {
 
   fillGrid(inputs, grid);
 
-  console.log(grid.join("\n"));
-
   let risk = 0;
   for (let rowIndex = 0; rowIndex < grid.length - 2; ++rowIndex) {
     const rowIndexOffset = rowIndex + 1;
@@ -28,7 +26,6 @@ const start = () => {
       const neighboringMinima = Math.min(...adjacentCells);
 
       if (cell < neighboringMinima) {
-        console.log({ rowIndexOffset, columnIndexOffset, cell });
         risk += cell + 1;
       }
     }

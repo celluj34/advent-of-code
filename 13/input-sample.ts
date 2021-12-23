@@ -18,5 +18,4 @@ export default `6,10
 9,0
 
 fold along y=7
-fold along x=5
-`;
+fold along x=5`;

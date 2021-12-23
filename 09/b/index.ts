@@ -7,8 +7,6 @@ const start = () => {
 
   fillGrid(inputs, grid);
 
-  console.log(grid.join("\n"));
-
   const basins = new Array<number>();
   while (true) {
     const basin = findBasin(grid);
@@ -74,7 +72,6 @@ const findBasin = (grid: Array<Array<number>>) => {
       // const neighboringMinima = Math.min(...adjacentCells);
 
       // if (cell < neighboringMinima) {
-      //   console.log({ rowIndexOffset, columnIndexOffset, cell });
       //   risk += cell + 1;
       // }
     }

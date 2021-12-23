@@ -24,7 +24,6 @@ const start = () => {
     const wirePositions = getWirePositions(input);
     const displayedNumber = getDisplayedNumber(input.displayed, wirePositions);
 
-    console.log(displayedNumber);
     total += parseInt(displayedNumber);
   }
 
