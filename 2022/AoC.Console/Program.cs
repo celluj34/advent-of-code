@@ -1,4 +1,4 @@
-﻿using AoC.Console._01;
+﻿using AoC.Console._07;
 
 namespace AoC.Console
 {
@@ -6,9 +6,9 @@ namespace AoC.Console
     {
         public static async Task Main()
         {
-            var t = new B();
+            var program = new A();
 
-            await t.Execute();
+            await program.Execute();
         }
     }
 }

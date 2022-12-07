@@ -2,7 +2,7 @@
 {
     public class A
     {
-        private const string _input = @"7896
+        private const string Input = @"7896
 4992
 1382
 2920
@@ -2245,14 +2245,11 @@
             var elves = new List<Elf>();
             var calories = 0;
 
-            foreach (var line in _input.Split(Environment.NewLine))
+            foreach (var line in Input.Split(Environment.NewLine))
             {
                 if (string.IsNullOrEmpty(line))
                 {
-                    elves.Add(new Elf
-                    {
-                        Calories = calories
-                    });
+                    elves.Add(new Elf(calories));
 
                     calories = 0;
 
@@ -2265,9 +2262,6 @@
             System.Console.WriteLine(elves.OrderByDescending(x => x.Calories).Take(1).Select(x => x.Calories).Sum());
         }
 
-        private record Elf
-        {
-            public int Calories { get; init; }
-        }
+        private record Elf(int Calories);
     }
 }

@@ -2,7 +2,7 @@
 {
     public class B
     {
-        private const string _input = @"QJRBMDMtRDCtJzBtJMfjNjhwvmNDvwjLVVgh
+        private const string Input = @"QJRBMDMtRDCtJzBtJMfjNjhwvmNDvwjLVVgh
 TPSNNPZGTjgmSmvfjL
 bPlpZZbpsTlTsWprpGFCJtRtzMNdMMBBcWnJQB
 tppvbQBhpQQdrzMMcLwhMc
@@ -320,7 +320,7 @@ JlgnNhsqVqNqNpPlvZvDDDGlZZ
                                                      }))
                                    .ToDictionary(x => x.character, x => x.score);
 
-            var score = _input.Split(Environment.NewLine)
+            var score = Input.Split(Environment.NewLine)
                               .Where(line => !string.IsNullOrEmpty(line))
                               .Chunk(3)
                               .Select(line =>

@@ -4,7 +4,7 @@ namespace AoC.Console._02
 {
     public class A
     {
-        private const string _input = @"B X
+        private const string Input = @"B X
 B Z
 B Z
 A Y
@@ -2508,7 +2508,7 @@ A Y
 
         public async Task Execute()
         {
-            var score = _input.Split(Environment.NewLine)
+            var score = Input.Split(Environment.NewLine)
                               .Where(line => !string.IsNullOrEmpty(line))
                               .Select(line =>
                               {
