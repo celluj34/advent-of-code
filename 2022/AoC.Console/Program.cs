@@ -6,7 +6,7 @@ namespace AoC.Console
     {
         public static async Task Main()
         {
-            var program = new A();
+            var program = new B();
 
             await program.Execute();
         }
