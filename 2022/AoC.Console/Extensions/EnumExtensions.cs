@@ -1,21 +1,20 @@
-﻿namespace AoC.Console.Extensions
+﻿namespace AoC.Console.Extensions;
+
+public static class EnumExtensions
 {
-    public static class EnumExtensions
+    public static string GetDisplayName(this Enum value)
     {
-        public static string GetDisplayName(this Enum value)
-        {
-            var name = value.ToString();
-            var memberInfo = value.GetType().GetMember(name).FirstOrDefault();
+        var name = value.ToString();
+        var memberInfo = value.GetType().GetMember(name).FirstOrDefault();
 
-            return memberInfo == null ? name : memberInfo.GetDisplayName();
-        }
+        return memberInfo == null ? name : memberInfo.GetDisplayName();
+    }
 
-        public static T? GetDefaultValue<T>(this Enum value)
-        {
-            var name = value.ToString();
-            var memberInfo = value.GetType().GetMember(name).FirstOrDefault();
+    public static T? GetDefaultValue<T>(this Enum value)
+    {
+        var name = value.ToString();
+        var memberInfo = value.GetType().GetMember(name).FirstOrDefault();
 
-            return memberInfo == null ? default : memberInfo.GetDefaultValue<T>();
-        }
+        return memberInfo == null ? default : memberInfo.GetDefaultValue<T>();
     }
 }

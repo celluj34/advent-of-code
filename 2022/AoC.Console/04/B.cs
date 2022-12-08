@@ -1,10 +1,10 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace AoC.Console._04
+namespace AoC.Console._04;
+
+public class B
 {
-    public class B
-    {
-        private const string Input = @"75-76,18-75
+    private const string Input = @"75-76,18-75
 2-54,1-50
 82-83,78-82
 13-37,37-75
@@ -1006,39 +1006,38 @@ namespace AoC.Console._04
 61-79,49-78
 ";
 
-        public async Task Execute()
-        {
-            var regex = new Regex("^(?<leftStart>\\d+)\\-(?<leftEnd>\\d+),(?<rightStart>\\d+)\\-(?<rightEnd>\\d+)$", RegexOptions.Compiled);
+    public async Task Execute()
+    {
+        var regex = new Regex("^(?<leftStart>\\d+)\\-(?<leftEnd>\\d+),(?<rightStart>\\d+)\\-(?<rightEnd>\\d+)$", RegexOptions.Compiled);
 
-            var superSets = Input.Split(Environment.NewLine)
-                                 .Where(line => !string.IsNullOrEmpty(line))
-                                 .Select(line =>
+        var superSets = Input.Split(Environment.NewLine)
+                             .Where(line => !string.IsNullOrEmpty(line))
+                             .Select(line =>
+                             {
+                                 var match = regex.Match(line);
+
+                                 if (!match.Success)
                                  {
-                                     var match = regex.Match(line);
+                                     throw new Exception("what");
+                                 }
 
-                                     if (!match.Success)
-                                     {
-                                         throw new Exception("what");
-                                     }
+                                 return new
+                                 {
+                                     leftAssignment = new Assignment(int.Parse(match.Groups["leftStart"].Value), int.Parse(match.Groups["leftEnd"].Value)),
+                                     rightAssignment =
+                                         new Assignment(int.Parse(match.Groups["rightStart"].Value), int.Parse(match.Groups["rightEnd"].Value))
+                                 };
+                             })
+                             .Count(x => x.leftAssignment.Overlaps(x.rightAssignment) || x.rightAssignment.Overlaps(x.leftAssignment));
 
-                                     return new
-                                     {
-                                         leftAssignment = new Assignment(int.Parse(match.Groups["leftStart"].Value), int.Parse(match.Groups["leftEnd"].Value)),
-                                         rightAssignment =
-                                             new Assignment(int.Parse(match.Groups["rightStart"].Value), int.Parse(match.Groups["rightEnd"].Value))
-                                     };
-                                 })
-                                 .Count(x => x.leftAssignment.Overlaps(x.rightAssignment) || x.rightAssignment.Overlaps(x.leftAssignment));
+        System.Console.WriteLine(superSets);
+    }
 
-            System.Console.WriteLine(superSets);
-        }
-
-        private record Assignment(int Start, int End)
+    private record Assignment(int Start, int End)
+    {
+        public bool Overlaps(Assignment other)
         {
-            public bool Overlaps(Assignment other)
-            {
-                return End >= other.Start && other.End >= Start;
-            }
+            return End >= other.Start && other.End >= Start;
         }
     }
 }

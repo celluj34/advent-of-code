@@ -1,8 +1,8 @@
-﻿namespace AoC.Console._03
+﻿namespace AoC.Console._03;
+
+public class B
 {
-    public class B
-    {
-        private const string Input = @"QJRBMDMtRDCtJzBtJMfjNjhwvmNDvwjLVVgh
+    private const string Input = @"QJRBMDMtRDCtJzBtJMfjNjhwvmNDvwjLVVgh
 TPSNNPZGTjgmSmvfjL
 bPlpZZbpsTlTsWprpGFCJtRtzMNdMMBBcWnJQB
 tppvbQBhpQQdrzMMcLwhMc
@@ -304,34 +304,33 @@ fNdqhJsNrnnVNhwNVdrdsVczQCcwCMHSTCHgHCRzHgcM
 JlgnNhsqVqNqNpPlvZvDDDGlZZ
 ";
 
-        public async Task Execute()
-        {
-            var scores = Enumerable.Range(0, 26)
-                                   .Select(x => new
-                                   {
-                                       character = char.ConvertFromUtf32('a' + x),
-                                       score = x + 1
-                                   })
-                                   .Concat(Enumerable.Range(0, 26)
-                                                     .Select(x => new
-                                                     {
-                                                         character = char.ConvertFromUtf32('A' + x),
-                                                         score = x + 27
-                                                     }))
-                                   .ToDictionary(x => x.character, x => x.score);
+    public async Task Execute()
+    {
+        var scores = Enumerable.Range(0, 26)
+                               .Select(x => new
+                               {
+                                   character = char.ConvertFromUtf32('a' + x),
+                                   score = x + 1
+                               })
+                               .Concat(Enumerable.Range(0, 26)
+                                                 .Select(x => new
+                                                 {
+                                                     character = char.ConvertFromUtf32('A' + x),
+                                                     score = x + 27
+                                                 }))
+                               .ToDictionary(x => x.character, x => x.score);
 
-            var score = Input.Split(Environment.NewLine)
-                              .Where(line => !string.IsNullOrEmpty(line))
-                              .Chunk(3)
-                              .Select(line =>
-                              {
-                                  var c = line[0].Intersect(line[1]).Intersect(line[2]).Single().ToString();
+        var score = Input.Split(Environment.NewLine)
+                         .Where(line => !string.IsNullOrEmpty(line))
+                         .Chunk(3)
+                         .Select(line =>
+                         {
+                             var c = line[0].Intersect(line[1]).Intersect(line[2]).Single().ToString();
 
-                                  return scores[c];
-                              })
-                              .Sum();
+                             return scores[c];
+                         })
+                         .Sum();
 
-            System.Console.WriteLine(score);
-        }
+        System.Console.WriteLine(score);
     }
 }

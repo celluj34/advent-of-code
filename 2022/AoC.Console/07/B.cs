@@ -1,10 +1,10 @@
 ﻿using AoC.Console.Extensions;
 
-namespace AoC.Console._07
+namespace AoC.Console._07;
+
+public class B
 {
-    public class B
-    {
-        private const string TempInput = @"$ cd /
+    private const string TempInput = @"$ cd /
 $ ls
 dir a
 14848514 b.txt
@@ -29,7 +29,7 @@ $ ls
 7214296 k
 ";
 
-        private const string Input = @"$ cd /
+    private const string Input = @"$ cd /
 $ ls
 dir bfqzjjct
 dir cgcqpjpn
@@ -1063,136 +1063,135 @@ $ ls
 287623 spfzctll
 ";
 
-        public async Task Execute()
+    public async Task Execute()
+    {
+        var currentDirectory = new Directory("/", null);
+
+        using var inputEnumerator = Input.Split(Environment.NewLine).Skip(1).GetEnumerator();
+        inputEnumerator.MoveNext();
+
+        while (true)
         {
-            var currentDirectory = new Directory("/", null);
+            var line = inputEnumerator.Current;
 
-            using var inputEnumerator = Input.Split(Environment.NewLine).Skip(1).GetEnumerator();
-            inputEnumerator.MoveNext();
-
-            while (true)
+            if (string.IsNullOrEmpty(line))
             {
-                var line = inputEnumerator.Current;
+                break;
+            }
 
-                if (string.IsNullOrEmpty(line))
+            var command = line[2..];
+
+            if (command == "ls")
+            {
+                while (true)
                 {
-                    break;
-                }
-
-                var command = line[2..];
-
-                if (command == "ls")
-                {
-                    while (true)
-                    {
-                        inputEnumerator.MoveNext();
-
-                        line = inputEnumerator.Current;
-
-                        if (line.StartsWith("$") || string.IsNullOrEmpty(line))
-                        {
-                            break;
-                        }
-
-                        // directory
-                        if (line.StartsWith("dir"))
-                        {
-                            var dirName = line[4..];
-
-                            // directory doesn't exist
-                            if (currentDirectory.Directories.All(x => x.Name != dirName))
-                            {
-                                currentDirectory.Directories.Add(new Directory(dirName, currentDirectory));
-                            }
-
-                            continue;
-                        }
-
-                        // file
-                        var info = line.Split(" ");
-                        var fileSize = ulong.Parse(info[0]);
-                        var fileName = info[1];
-
-                        // file doesn't exist
-                        if (currentDirectory.Files.All(x => x.Name != fileName))
-                        {
-                            currentDirectory.Files.Add(new File(fileName, fileSize));
-                        }
-                    }
-
-                    continue;
-                }
-
-                if (command.StartsWith("cd"))
-                {
-                    var dirName = command[3..];
-
-                    switch (dirName)
-                    {
-                        case "/":
-                            while (currentDirectory.Parent != null)
-                            {
-                                currentDirectory = currentDirectory.Parent;
-                            }
-
-                            break;
-
-                        case ".." when currentDirectory.Parent != null:
-                            currentDirectory = currentDirectory.Parent;
-
-                            break;
-
-                        default:
-                            currentDirectory = currentDirectory.Directories.Single(x => x.Name == dirName);
-
-                            break;
-                    }
-
                     inputEnumerator.MoveNext();
+
+                    line = inputEnumerator.Current;
+
+                    if (line.StartsWith("$") || string.IsNullOrEmpty(line))
+                    {
+                        break;
+                    }
+
+                    // directory
+                    if (line.StartsWith("dir"))
+                    {
+                        var dirName = line[4..];
+
+                        // directory doesn't exist
+                        if (currentDirectory.Directories.All(x => x.Name != dirName))
+                        {
+                            currentDirectory.Directories.Add(new Directory(dirName, currentDirectory));
+                        }
+
+                        continue;
+                    }
+
+                    // file
+                    var info = line.Split(" ");
+                    var fileSize = ulong.Parse(info[0]);
+                    var fileName = info[1];
+
+                    // file doesn't exist
+                    if (currentDirectory.Files.All(x => x.Name != fileName))
+                    {
+                        currentDirectory.Files.Add(new File(fileName, fileSize));
+                    }
                 }
+
+                continue;
             }
 
-            while (currentDirectory.Parent != null)
+            if (command.StartsWith("cd"))
             {
-                currentDirectory = currentDirectory.Parent;
-            }
+                var dirName = command[3..];
 
-            const ulong maxSpace = 70000000;
-            const ulong emptySpaceRequired = 30000000;
-            var sizeNeededToDelete = currentDirectory.Size - (maxSpace - emptySpaceRequired);
-
-            var directoryToDelete = GetAllDirectories(currentDirectory).Where(x => x.Size >= sizeNeededToDelete).MinBy(x => x.Size);
-
-            System.Console.WriteLine(directoryToDelete?.Size);
-        }
-
-        private IEnumerable<Directory> GetAllDirectories(Directory root, bool yieldRoot = true)
-        {
-            if (yieldRoot)
-            {
-                yield return root;
-            }
-
-            foreach (var directory in root.Directories)
-            {
-                yield return directory;
-
-                foreach (var childDirectory in GetAllDirectories(directory, false))
+                switch (dirName)
                 {
-                    yield return childDirectory;
+                    case "/":
+                        while (currentDirectory.Parent != null)
+                        {
+                            currentDirectory = currentDirectory.Parent;
+                        }
+
+                        break;
+
+                    case ".." when currentDirectory.Parent != null:
+                        currentDirectory = currentDirectory.Parent;
+
+                        break;
+
+                    default:
+                        currentDirectory = currentDirectory.Directories.Single(x => x.Name == dirName);
+
+                        break;
                 }
+
+                inputEnumerator.MoveNext();
             }
         }
 
-        private record Directory(string Name, Directory? Parent)
+        while (currentDirectory.Parent != null)
         {
-            public List<Directory> Directories { get; } = new();
-            public List<File> Files { get; } = new();
-            public ulong FileSize => Files.Sum(x => x.Size);
-            public ulong DirectorySize => Directories.Sum(x => x.Size);
-            public ulong Size => FileSize + DirectorySize;
+            currentDirectory = currentDirectory.Parent;
         }
 
-        private record File(string Name, ulong Size);
+        const ulong maxSpace = 70000000;
+        const ulong emptySpaceRequired = 30000000;
+        var sizeNeededToDelete = currentDirectory.Size - (maxSpace - emptySpaceRequired);
+
+        var directoryToDelete = GetAllDirectories(currentDirectory).Where(x => x.Size >= sizeNeededToDelete).MinBy(x => x.Size);
+
+        System.Console.WriteLine(directoryToDelete?.Size);
     }
+
+    private IEnumerable<Directory> GetAllDirectories(Directory root, bool yieldRoot = true)
+    {
+        if (yieldRoot)
+        {
+            yield return root;
+        }
+
+        foreach (var directory in root.Directories)
+        {
+            yield return directory;
+
+            foreach (var childDirectory in GetAllDirectories(directory, false))
+            {
+                yield return childDirectory;
+            }
+        }
+    }
+
+    private record Directory(string Name, Directory? Parent)
+    {
+        public List<Directory> Directories { get; } = new();
+        public List<File> Files { get; } = new();
+        public ulong FileSize => Files.Sum(x => x.Size);
+        public ulong DirectorySize => Directories.Sum(x => x.Size);
+        public ulong Size => FileSize + DirectorySize;
+    }
+
+    private record File(string Name, ulong Size);
 }

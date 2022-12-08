@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
 using AoC.Console.Extensions;
 
-namespace AoC.Console._02
+namespace AoC.Console._02;
+
+public class B
 {
-    public class B
-    {
-        private const string Input = @"B X
+    private const string Input = @"B X
 B Z
 B Z
 A Y
@@ -2507,87 +2507,86 @@ A Y
 A Y
 ";
 
-        public async Task Execute()
+    public async Task Execute()
+    {
+        var score = Input.Split(Environment.NewLine)
+                         .Where(line => !string.IsNullOrEmpty(line))
+                         .Select(line =>
+                         {
+                             var moves = line.Split(" ");
+
+                             return new
+                             {
+                                 opponentMove = GetMove(moves[0]),
+                                 result = GetResult(moves[1])
+                             };
+                         })
+                         .Select(t => GetMyMove(t.opponentMove, t.result).GetDefaultValue<int>() + t.result.GetDefaultValue<int>())
+                         .Sum();
+
+        System.Console.WriteLine(score);
+    }
+
+    private MoveType GetMove(string move)
+    {
+        return move switch
         {
-            var score = Input.Split(Environment.NewLine)
-                              .Where(line => !string.IsNullOrEmpty(line))
-                              .Select(line =>
-                              {
-                                  var moves = line.Split(" ");
+            "A" => MoveType.Rock,
+            "B" => MoveType.Paper,
+            "C" => MoveType.Scissors,
+            _ => throw new Exception("what")
+        };
+    }
 
-                                  return new
-                                  {
-                                      opponentMove = GetMove(moves[0]),
-                                      result = GetResult(moves[1])
-                                  };
-                              })
-                              .Select(t => GetMyMove(t.opponentMove, t.result).GetDefaultValue<int>() + t.result.GetDefaultValue<int>())
-                              .Sum();
-
-            System.Console.WriteLine(score);
-        }
-
-        private MoveType GetMove(string move)
+    private Result GetResult(string move)
+    {
+        return move switch
         {
-            return move switch
-            {
-                "A" => MoveType.Rock,
-                "B" => MoveType.Paper,
-                "C" => MoveType.Scissors,
-                _ => throw new Exception("what")
-            };
-        }
+            "X" => Result.Lose,
+            "Y" => Result.Draw,
+            "Z" => Result.Win,
+            _ => throw new Exception("what")
+        };
+    }
 
-        private Result GetResult(string move)
+    private MoveType GetMyMove(MoveType opponentMove, Result desiredResult)
+    {
+        return (opponentMove, desiredResult) switch
         {
-            return move switch
-            {
-                "X" => Result.Lose,
-                "Y" => Result.Draw,
-                "Z" => Result.Win,
-                _ => throw new Exception("what")
-            };
-        }
+            (MoveType.Rock, Result.Lose) => MoveType.Scissors,
+            (MoveType.Rock, Result.Draw) => MoveType.Rock,
+            (MoveType.Rock, Result.Win) => MoveType.Paper,
+            (MoveType.Paper, Result.Lose) => MoveType.Rock,
+            (MoveType.Paper, Result.Draw) => MoveType.Paper,
+            (MoveType.Paper, Result.Win) => MoveType.Scissors,
+            (MoveType.Scissors, Result.Lose) => MoveType.Paper,
+            (MoveType.Scissors, Result.Draw) => MoveType.Scissors,
+            (MoveType.Scissors, Result.Win) => MoveType.Rock,
+            _ => throw new Exception("what")
+        };
+    }
 
-        private MoveType GetMyMove(MoveType opponentMove, Result desiredResult)
-        {
-            return (opponentMove, desiredResult) switch
-            {
-                (MoveType.Rock, Result.Lose) => MoveType.Scissors,
-                (MoveType.Rock, Result.Draw) => MoveType.Rock,
-                (MoveType.Rock, Result.Win) => MoveType.Paper,
-                (MoveType.Paper, Result.Lose) => MoveType.Rock,
-                (MoveType.Paper, Result.Draw) => MoveType.Paper,
-                (MoveType.Paper, Result.Win) => MoveType.Scissors,
-                (MoveType.Scissors, Result.Lose) => MoveType.Paper,
-                (MoveType.Scissors, Result.Draw) => MoveType.Scissors,
-                (MoveType.Scissors, Result.Win) => MoveType.Rock,
-                _ => throw new Exception("what")
-            };
-        }
+    private enum MoveType
+    {
+        [DefaultValue(1)]
+        Rock,
 
-        private enum MoveType
-        {
-            [DefaultValue(1)]
-            Rock,
+        [DefaultValue(2)]
+        Paper,
 
-            [DefaultValue(2)]
-            Paper,
+        [DefaultValue(3)]
+        Scissors
+    }
 
-            [DefaultValue(3)]
-            Scissors
-        }
+    private enum Result
+    {
+        [DefaultValue(0)]
+        Lose,
 
-        private enum Result
-        {
-            [DefaultValue(0)]
-            Lose,
+        [DefaultValue(3)]
+        Draw,
 
-            [DefaultValue(3)]
-            Draw,
-
-            [DefaultValue(6)]
-            Win
-        }
+        [DefaultValue(6)]
+        Win
     }
 }

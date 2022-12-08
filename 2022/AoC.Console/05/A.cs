@@ -1,11 +1,11 @@
 ﻿using System.Text.RegularExpressions;
 using AoC.Console.Extensions;
 
-namespace AoC.Console._05
+namespace AoC.Console._05;
+
+public class A
 {
-    public class A
-    {
-        private const string Input = @"[Q]         [N]             [N]    
+    private const string Input = @"[Q]         [N]             [N]    
 [H]     [B] [D]             [S] [M]
 [C]     [Q] [J]         [V] [Q] [D]
 [T]     [S] [Z] [F]     [J] [J] [W]
@@ -521,61 +521,60 @@ move 7 from 2 to 4
 move 5 from 2 to 6
 ";
 
-        public async Task Execute()
+    public async Task Execute()
+    {
+        var regex = new Regex("^move (?<numberToMove>\\d+) from (?<oldStack>\\d+) to (?<newStack>\\d+)$", RegexOptions.Compiled);
+
+        var lines = Input.Split(Environment.NewLine).ToList();
+
+        var initialStacks = lines.TakeWhile(x => !string.IsNullOrEmpty(x))
+                                 .Select(x => x.Chunk(4).Select(y => y.Skip(1).Take(1).Single().ToString().Trim()).ToList())
+                                 .Reverse()
+                                 .Skip(1)
+                                 .ToList();
+
+        var stacks = Enumerable.Range(0, initialStacks[0].Count).Select(x => new Stack<string>(0)).ToArray();
+
+        foreach (var initialStack in initialStacks)
         {
-            var regex = new Regex("^move (?<numberToMove>\\d+) from (?<oldStack>\\d+) to (?<newStack>\\d+)$", RegexOptions.Compiled);
-
-            var lines = Input.Split(Environment.NewLine).ToList();
-
-            var initialStacks = lines.TakeWhile(x => !string.IsNullOrEmpty(x))
-                                     .Select(x => x.Chunk(4).Select(y => y.Skip(1).Take(1).Single().ToString().Trim()).ToList())
-                                     .Reverse()
-                                     .Skip(1)
-                                     .ToList();
-
-            var stacks = Enumerable.Range(0, initialStacks[0].Count).Select(x => new Stack<string>(0)).ToArray();
-
-            foreach (var initialStack in initialStacks)
+            for (var i = 0; i < initialStack.Count; i++)
             {
-                for (var i = 0; i < initialStack.Count; i++)
+                var box = initialStack[i];
+                if (box.Length > 0)
                 {
-                    var box = initialStack[i];
-                    if (box.Length > 0)
-                    {
-                        stacks[i].Push(box);
-                    }
+                    stacks[i].Push(box);
                 }
             }
-
-            lines.Skip(initialStacks.Count + 1)
-                 .Where(x => !string.IsNullOrEmpty(x))
-                 .Select(line =>
-                 {
-                     var match = regex.Match(line);
-
-                     if (!match.Success)
-                     {
-                         throw new Exception("what");
-                     }
-
-                     return new MovementInstruction(int.Parse(match.Groups["numberToMove"].Value),
-                         int.Parse(match.Groups["oldStack"].Value) - 1,
-                         int.Parse(match.Groups["newStack"].Value) - 1);
-                 })
-                 .ToList()
-                 .ForEach(x =>
-                 {
-                     for (var i = 1; i <= x.Count; i++)
-                     {
-                         stacks[x.NewStack].Push(stacks[x.OldStack].Pop());
-                     }
-                 });
-
-            var topItems = stacks.Select(x => x.Peek()).Join("");
-
-            System.Console.WriteLine(topItems);
         }
 
-        private record MovementInstruction(int Count, int OldStack, int NewStack);
+        lines.Skip(initialStacks.Count + 1)
+             .Where(x => !string.IsNullOrEmpty(x))
+             .Select(line =>
+             {
+                 var match = regex.Match(line);
+
+                 if (!match.Success)
+                 {
+                     throw new Exception("what");
+                 }
+
+                 return new MovementInstruction(int.Parse(match.Groups["numberToMove"].Value),
+                     int.Parse(match.Groups["oldStack"].Value) - 1,
+                     int.Parse(match.Groups["newStack"].Value) - 1);
+             })
+             .ToList()
+             .ForEach(x =>
+             {
+                 for (var i = 1; i <= x.Count; i++)
+                 {
+                     stacks[x.NewStack].Push(stacks[x.OldStack].Pop());
+                 }
+             });
+
+        var topItems = stacks.Select(x => x.Peek()).Join("");
+
+        System.Console.WriteLine(topItems);
     }
+
+    private record MovementInstruction(int Count, int OldStack, int NewStack);
 }

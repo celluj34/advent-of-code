@@ -1,8 +1,8 @@
-﻿namespace AoC.Console._01
+﻿namespace AoC.Console._01;
+
+public class A
 {
-    public class A
-    {
-        private const string Input = @"7896
+    private const string Input = @"7896
 4992
 1382
 2920
@@ -2240,28 +2240,27 @@
 2139
 ";
 
-        public async Task Execute()
+    public async Task Execute()
+    {
+        var elves = new List<Elf>();
+        var calories = 0;
+
+        foreach (var line in Input.Split(Environment.NewLine))
         {
-            var elves = new List<Elf>();
-            var calories = 0;
-
-            foreach (var line in Input.Split(Environment.NewLine))
+            if (string.IsNullOrEmpty(line))
             {
-                if (string.IsNullOrEmpty(line))
-                {
-                    elves.Add(new Elf(calories));
+                elves.Add(new Elf(calories));
 
-                    calories = 0;
+                calories = 0;
 
-                    continue;
-                }
-
-                calories += int.Parse(line);
+                continue;
             }
 
-            System.Console.WriteLine(elves.OrderByDescending(x => x.Calories).Take(1).Select(x => x.Calories).Sum());
+            calories += int.Parse(line);
         }
 
-        private record Elf(int Calories);
+        System.Console.WriteLine(elves.OrderByDescending(x => x.Calories).Take(1).Select(x => x.Calories).Sum());
     }
+
+    private record Elf(int Calories);
 }

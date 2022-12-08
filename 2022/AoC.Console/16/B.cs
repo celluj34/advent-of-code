@@ -1,10 +1,9 @@
-﻿namespace AoC.Console._16
+﻿namespace AoC.Console._16;
+
+public class B
 {
-    public class B
+    public async Task Execute()
     {
-        public async Task Execute()
-        {
-            System.Console.WriteLine("Hello, World!");
-        }
+        System.Console.WriteLine("Hello, World!");
     }
 }

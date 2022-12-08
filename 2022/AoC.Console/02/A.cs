@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
 using AoC.Console.Extensions;
 
-namespace AoC.Console._02
+namespace AoC.Console._02;
+
+public class A
 {
-    public class A
-    {
-        private const string Input = @"B X
+    private const string Input = @"B X
 B Z
 B Z
 A Y
@@ -2507,76 +2507,75 @@ A Y
 A Y
 ";
 
-        public async Task Execute()
+    public async Task Execute()
+    {
+        var score = Input.Split(Environment.NewLine)
+                         .Where(line => !string.IsNullOrEmpty(line))
+                         .Select(line =>
+                         {
+                             var moves = line.Split(" ");
+
+                             return new
+                             {
+                                 opponentMove = GetMove(moves[0]),
+                                 myMove = GetMove(moves[1])
+                             };
+                         })
+                         .Select(t => GetResult(t.opponentMove, t.myMove).GetDefaultValue<int>() + t.myMove.GetDefaultValue<int>())
+                         .Sum();
+
+        System.Console.WriteLine(score);
+    }
+
+    private MoveType GetMove(string move)
+    {
+        return move switch
         {
-            var score = Input.Split(Environment.NewLine)
-                              .Where(line => !string.IsNullOrEmpty(line))
-                              .Select(line =>
-                              {
-                                  var moves = line.Split(" ");
+            "A" or "X" => MoveType.Rock,
+            "B" or "Y" => MoveType.Paper,
+            "C" or "Z" => MoveType.Scissors,
+            _ => throw new Exception("what")
+        };
+    }
 
-                                  return new
-                                  {
-                                      opponentMove = GetMove(moves[0]),
-                                      myMove = GetMove(moves[1])
-                                  };
-                              })
-                              .Select(t => GetResult(t.opponentMove, t.myMove).GetDefaultValue<int>() + t.myMove.GetDefaultValue<int>())
-                              .Sum();
-
-            System.Console.WriteLine(score);
+    private Result GetResult(MoveType opponentMove, MoveType myMove)
+    {
+        if (opponentMove == myMove)
+        {
+            return Result.Draw;
         }
 
-        private MoveType GetMove(string move)
+        if ((opponentMove == MoveType.Rock && myMove == MoveType.Scissors) ||
+            (opponentMove == MoveType.Scissors && myMove == MoveType.Paper) ||
+            (opponentMove == MoveType.Paper && myMove == MoveType.Rock))
         {
-            return move switch
-            {
-                "A" or "X" => MoveType.Rock,
-                "B" or "Y" => MoveType.Paper,
-                "C" or "Z" => MoveType.Scissors,
-                _ => throw new Exception("what")
-            };
+            return Result.Lose;
         }
 
-        private Result GetResult(MoveType opponentMove, MoveType myMove)
-        {
-            if (opponentMove == myMove)
-            {
-                return Result.Draw;
-            }
+        return Result.Win;
+    }
 
-            if ((opponentMove == MoveType.Rock && myMove == MoveType.Scissors) ||
-                (opponentMove == MoveType.Scissors && myMove == MoveType.Paper) ||
-                (opponentMove == MoveType.Paper && myMove == MoveType.Rock))
-            {
-                return Result.Lose;
-            }
+    private enum MoveType
+    {
+        [DefaultValue(1)]
+        Rock,
 
-            return Result.Win;
-        }
+        [DefaultValue(2)]
+        Paper,
 
-        private enum MoveType
-        {
-            [DefaultValue(1)]
-            Rock,
+        [DefaultValue(3)]
+        Scissors
+    }
 
-            [DefaultValue(2)]
-            Paper,
+    private enum Result
+    {
+        [DefaultValue(0)]
+        Lose,
 
-            [DefaultValue(3)]
-            Scissors
-        }
+        [DefaultValue(3)]
+        Draw,
 
-        private enum Result
-        {
-            [DefaultValue(0)]
-            Lose,
-
-            [DefaultValue(3)]
-            Draw,
-
-            [DefaultValue(6)]
-            Win
-        }
+        [DefaultValue(6)]
+        Win
     }
 }
