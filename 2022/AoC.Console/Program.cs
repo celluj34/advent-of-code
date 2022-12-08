@@ -1,4 +1,4 @@
-﻿using AoC.Console._07;
+﻿using AoC.Console._04;
 
 namespace AoC.Console
 {
