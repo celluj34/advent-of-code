@@ -6,4 +6,17 @@ public static class EnumerableExtensions
     {
         return source.Aggregate(0UL, (current, item) => current + summer(item));
     }
+
+    public static IEnumerable<T> TakeUntilInclusive<T>(this IEnumerable<T> collection, Predicate<T> endCondition)
+    {
+        foreach (var item in collection)
+        {
+            yield return item;
+
+            if (endCondition(item))
+            {
+                break;
+            }
+        }
+    }
 }
