@@ -1,4 +1,4 @@
-﻿namespace AoC.Console
+﻿namespace AoC.Console.Extensions
 {
     public static class EnumerableExtensions
     {

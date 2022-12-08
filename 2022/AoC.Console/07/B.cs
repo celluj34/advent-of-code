@@ -1,4 +1,6 @@
-﻿namespace AoC.Console._07
+﻿using AoC.Console.Extensions;
+
+namespace AoC.Console._07
 {
     public class B
     {

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using AoC.Console.Extensions;
 
 namespace AoC.Console._02
 {

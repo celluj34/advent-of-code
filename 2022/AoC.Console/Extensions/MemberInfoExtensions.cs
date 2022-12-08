@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace AoC.Console
+namespace AoC.Console.Extensions
 {
     public static class MemberInfoExtensions
     {
