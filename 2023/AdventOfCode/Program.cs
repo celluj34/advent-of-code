@@ -1,6 +1,6 @@
-﻿using AoC.Console._01;
+﻿using AdventOfCode._01;
 
-namespace AoC.Console;
+namespace AdventOfCode;
 
 public class Program
 {

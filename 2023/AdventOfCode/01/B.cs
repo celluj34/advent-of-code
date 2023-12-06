@@ -1,4 +1,4 @@
-﻿namespace AoC.Console._01;
+﻿namespace AdventOfCode._01;
 
 public class B
 {
@@ -79,6 +79,6 @@ public class B
                          })
                          .Sum();
 
-        System.Console.WriteLine(total);
+        Console.WriteLine(total);
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace AoC.Console.Extensions;
+﻿namespace AdventOfCode.Extensions;
 
 public static class EnumerableExtensions
 {
