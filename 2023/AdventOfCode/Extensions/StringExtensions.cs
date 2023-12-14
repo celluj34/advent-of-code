@@ -24,7 +24,11 @@ public static class StringExtensions
 
     public static T ToEnum<T>(this string input) where T : struct, Enum
     {
-        return input.ToNullableEnum<T>() ??
-            input.ToNullableEnumFromDisplayName<T>() ?? throw new ArgumentException($"{input} is not a value for enum {typeof(T).FullName}");
+        return input.ToNullableEnum<T>() ?? input.ToEnumFromDisplayName<T>();
+    }
+
+    public static T ToEnumFromDisplayName<T>(this string input) where T : struct, Enum
+    {
+        return input.ToNullableEnumFromDisplayName<T>() ?? throw new ArgumentException($"{input} is not a value for enum {typeof(T).FullName}");
     }
 }
