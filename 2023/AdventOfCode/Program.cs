@@ -4,10 +4,10 @@ namespace AdventOfCode;
 
 public class Program
 {
-    public static async Task Main()
+    public static void Main()
     {
         var program = new B();
 
-        await program.Execute();
+        program.Execute();
     }
 }

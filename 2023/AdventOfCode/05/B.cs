@@ -2,7 +2,7 @@
 
 public class B
 {
-    public async Task Execute()
+    public void Execute()
     {
         var (seeds, seedToSoil, soilToFertilizer, fertilizerToWater, waterToLight, lightToTemperature, temperatureToHumidity, humidityToLocation) =
             GetInputData();

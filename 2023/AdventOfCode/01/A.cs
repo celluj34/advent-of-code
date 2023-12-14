@@ -15,7 +15,7 @@ public class A
         '9'
     };
 
-    public async Task Execute()
+    public void Execute()
     {
         var total = Input.Day1.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
                          .Select(line =>

@@ -60,7 +60,7 @@ public class B
         }
     };
 
-    public async Task Execute()
+    public void Execute()
     {
         var total = Input.Day1.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
                          .Select(line =>
