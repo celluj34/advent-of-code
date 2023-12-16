@@ -19,4 +19,21 @@ public static class EnumerableExtensions
             }
         }
     }
+
+    public static bool All<TSource>(this IEnumerable<TSource> source, Func<TSource, int, bool> predicate)
+    {
+        var i = 0;
+
+        foreach (var element in source)
+        {
+            if (!predicate(element, i))
+            {
+                return false;
+            }
+
+            ++i;
+        }
+
+        return true;
+    }
 }

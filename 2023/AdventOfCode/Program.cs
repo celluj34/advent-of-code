@@ -1,4 +1,4 @@
-﻿using AdventOfCode._07;
+﻿using AdventOfCode._12;
 
 namespace AdventOfCode;
 
@@ -6,7 +6,7 @@ public class Program
 {
     public static void Main()
     {
-        var program = new B();
+        var program = new A();
 
         program.Execute();
     }
