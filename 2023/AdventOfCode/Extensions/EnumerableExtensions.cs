@@ -36,4 +36,17 @@ public static class EnumerableExtensions
 
         return true;
     }
+
+    public static IEnumerable<T> Repeat<T>(this IEnumerable<T> source, int count)
+    {
+        var enumerable = source.ToList();
+
+        for (var i = 0; i < count; i++)
+        {
+            foreach (var item in enumerable)
+            {
+                yield return item;
+            }
+        }
+    }
 }
