@@ -62,7 +62,7 @@ public class B
 
     public void Execute()
     {
-        var total = Input.Day1.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
+        var total = Input.Day1.Split(Environment.NewLine)
                          .Select(line =>
                          {
                              var keyValuePair = _digits.MinBy(x =>
