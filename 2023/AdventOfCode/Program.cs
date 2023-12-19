@@ -1,4 +1,4 @@
-﻿using AdventOfCode._02;
+﻿using AdventOfCode._03;
 
 namespace AdventOfCode;
 
