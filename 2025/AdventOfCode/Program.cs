@@ -1,12 +1,10 @@
-﻿using AdventOfCode._01;
+﻿namespace AdventOfCode;
 
-namespace AdventOfCode;
-
-public class Program
+public static class Program
 {
     public static void Main()
     {
-        var program = new B();
+        var program = new AdventOfCode._01.B();
 
         program.Execute();
     }
