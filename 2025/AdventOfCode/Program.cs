@@ -4,7 +4,7 @@ public static class Program
 {
     public static void Main()
     {
-        var program = new AdventOfCode._04.B();
+        var program = new AdventOfCode._05.B();
 
         program.Execute();
     }
