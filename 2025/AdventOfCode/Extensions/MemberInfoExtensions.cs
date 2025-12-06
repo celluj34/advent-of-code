@@ -8,7 +8,6 @@ public static class MemberInfoExtensions
 {
     public static string GetDisplayName(this MemberInfo member)
     {
-
         var attribute = member.GetCustomAttributes<DisplayAttribute>(false).SingleOrDefault();
 
         return attribute?.GetName() ?? member.Name;
@@ -16,9 +15,8 @@ public static class MemberInfoExtensions
 
     public static T? GetDefaultValue<T>(this MemberInfo member)
     {
-
         var attribute = member.GetCustomAttributes<DefaultValueAttribute>(false).SingleOrDefault();
 
-        return (T?)attribute?.Value;
+        return (T?) attribute?.Value;
     }
 }

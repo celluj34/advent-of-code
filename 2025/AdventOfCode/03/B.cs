@@ -1,6 +1,4 @@
-﻿using AdventOfCode.Extensions;
-
-namespace AdventOfCode._03;
+﻿namespace AdventOfCode._03;
 
 public class B
 {
