@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode.Extensions;
+﻿using System.Numerics;
+
+namespace AdventOfCode.Extensions;
 
 public static class EnumerableExtensions
 {
@@ -48,5 +50,10 @@ public static class EnumerableExtensions
                 yield return item;
             }
         }
+    }
+
+    public static T Product<T>(this IEnumerable<T> source) where T : INumber<T>
+    {
+        return source.Aggregate(T.One, (current, item) => current * item);
     }
 }
